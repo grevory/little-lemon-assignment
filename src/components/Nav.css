@@ -1,0 +1,28 @@
+
+nav.main-menu {
+    justify-self: end;
+}
+
+nav.main-menu ul {
+    margin: 0;
+    padding: 0;
+}
+
+nav.main-menu li {
+    list-style-type: none;
+    display: inline-block;
+}
+
+nav.main-menu a {
+    padding: 6px 12px;
+    display: inline-block;
+    font-weight: bold;
+    font-family: Karla, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    color: #495E57;
+    text-decoration: none;
+}
+
+nav.main-menu a:hover {
+    text-decoration: underline;
+}

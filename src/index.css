@@ -11,3 +11,37 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.container {
+  max-width: 1048px;
+  margin: 0 auto;
+}
+
+header > .container {
+  display: grid;
+  grid-template-columns: 146px auto;
+  height: 60px;
+  align-items: center;
+}
+
+main  .hero {
+  background-color: #495E57;
+  padding: 1em 0;
+}
+
+main > .container,
+main > section > .container {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100px;
+}
+
+footer {
+  background-color: #495E57;
+}
+
+footer > .container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  min-height: 200px;
+}
