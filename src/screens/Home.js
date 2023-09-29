@@ -1,9 +1,9 @@
-import "./Main.css";
-import { Card } from "./Card";
+import "./Home.css";
+import { Card } from "../components/Card";
 import HeroPhoto from "../assets/restaurant-food.png";
 import GreekSaladPhoto from "../assets/greek-salad.png";
 
-export function Main() {
+const Home = () => {
 	const special = {
 		imgUrl: GreekSaladPhoto,
 		title: "Greek Salad",
@@ -13,7 +13,7 @@ export function Main() {
 	};
 	return (
 		<main>
-			<section className="hero">
+			<section className="hero green-area">
 				<div className="container">
 					<aside>
 						<h1>Little Lemon</h1>
@@ -23,7 +23,9 @@ export function Main() {
 							focused on traditional recipes served with a modern
 							twist.
 						</p>
-						<button className="primary">Reserve a Table</button>
+						<a href="/reservation" className="primary">
+							Reserve a Table
+						</a>
 					</aside>
 					<img
 						src={HeroPhoto}
@@ -45,4 +47,6 @@ export function Main() {
 			</section>
 		</main>
 	);
-}
+};
+
+export default Home;

@@ -8,12 +8,22 @@ import {
 	Link,
 } from "react-router-dom";
 import App from "./App";
+import Home from "./screens/Home";
 import "./index.css";
+import { Footer } from "./components/Footer";
+import { Header } from "./components/Header";
+import BookingPage from "./screens/BookingPage";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <App />,
+		element: (
+			<>
+				<Header />
+				<Home />
+				<Footer />
+			</>
+		),
 	},
 	{
 		path: "/about",
@@ -25,7 +35,13 @@ const router = createBrowserRouter([
 	},
 	{
 		path: "/reservation",
-		element: <App />,
+		element: (
+			<>
+				<Header />
+				<BookingPage />
+				<Footer />
+			</>
+		),
 	},
 	{
 		path: "/order",

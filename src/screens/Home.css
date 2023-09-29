@@ -2,14 +2,6 @@ main .hero * {
     color: #FFFFFF;
 }
 
-main .hero h1 {
-    color: #F4CE14;
-    font-family: "Markazi Text", Arial, Helvetica, sans-serif;
-    font-size: 64px;
-    font-weight: 400;
-    margin: 0;
-}
-
 main .hero h2 {
     color: #FFFFFF;
     font-family: "Markazi Text", Arial, Helvetica, sans-serif;
@@ -23,9 +15,11 @@ main h3 {
     font-family: "Markazi Text", Arial, Helvetica, sans-serif;
     font-size: 64px;
     font-weight: 400;
+    margin: 2rem 0;
 }
 
-main button.primary {
+main button.primary,
+main a.primary  {
     background-color: rgb(244, 206, 20);
     color: #000000;
     border-width: 0;
@@ -34,9 +28,11 @@ main button.primary {
     font-size: 40px;
     font-family: "Markazi Text", Arial, Helvetica, sans-serif;
     cursor: pointer;
+    text-decoration: none;
 }
 
-main button.primary:hover {
+main button.primary:hover,
+main a.primary:hover {
     background-color: rgba(244, 206, 20, 0.9);
 }
 
@@ -56,13 +52,9 @@ main button.primary:hover {
     height: 300px;
 }
 
-.highlights {
-    padding-bottom: 32px;
-}
-
 .highlights .online-menu {
     position: absolute;
-    top: 90px;
+    top: 50px;
     right: 0;
     width: auto;
 }
