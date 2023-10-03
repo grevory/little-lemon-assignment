@@ -7,25 +7,29 @@ export const BookingForm = ({
 	onSubmit,
 	id = "booking-form",
 }) => {
-	console.log("BookingForm availableTimes", availableTimes);
 	const minDate = Object.keys(availableTimes)[0];
 
 	const minGuests = 1;
 	const maxGuests = 12;
 
-	const [formValues, setFormValues] = useState({
-		date: "",
-		time: "",
-		numGuests: 2,
-		occasion: "Birthday",
-	});
+	const [formValues, setFormValues] = useState(() => ({
+		date: window.localStorage.getItem(`${id}-date`) || "",
+		time: window.localStorage.getItem(`${id}-time`) || "",
+		numGuests: window.localStorage.getItem(`${id}-numGuests`) || 2,
+		occasion: window.localStorage.getItem(`${id}-occasion`) || "Birthday",
+	}));
 
 	useEffect(() => {
 		for (const [key, value] of Object.entries(formValues)) {
-			console.log("Setting", `${id}-${key}`, value);
 			window.localStorage.setItem(`${id}-${key}`, value);
 		}
-	}, [formValues]);
+	}, [formValues, id]);
+
+	useEffect(() => {
+		if (!availableTimes[formValues.date]) {
+			onDateChange(formValues.date);
+		}
+	}, [availableTimes, formValues, onDateChange]);
 
 	const handleInputChange = (e) => {
 		const { name, value } = e.target;
@@ -53,7 +57,9 @@ export const BookingForm = ({
 				gap: 20,
 			}}
 			id={id}
-			onSubmit={handleSubmit(formValues)}
+			onSubmit={(e) => {
+				e.preventDefault();
+			}}
 		>
 			<label htmlFor="res-date">Choose date</label>
 			<input
@@ -91,15 +97,19 @@ export const BookingForm = ({
 			/>
 			<label htmlFor="occasion">Occasion</label>
 			<select
-				name="occasions"
+				name="occasion"
 				id="occasion"
 				value={formValues.occasion}
 				onChange={handleInputChange}
 			>
-				<option>Birthday</option>
-				<option>Anniversary</option>
+				<option value="Birthday">Birthday</option>
+				<option value="Anniversary">Anniversary</option>
 			</select>
-			<Button aria-label="Book" type="submit" className="secondary">
+			<Button
+				aria-label="Book"
+				className="secondary"
+				onClick={handleSubmit(formValues)}
+			>
 				Book
 			</Button>
 		</form>
