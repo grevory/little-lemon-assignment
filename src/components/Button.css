@@ -1,0 +1,33 @@
+button.primary,
+a.primary  {
+    background-color: rgb(244, 206, 20);
+    color: #000000;
+    border-width: 0;
+    border-radius: 16px;
+    padding: 0 20px;
+    font-size: 40px;
+    font-family: "Markazi Text", Arial, Helvetica, sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+main button.primary:hover,
+main a.primary:hover {
+    background-color: rgba(244, 206, 20, 0.9);
+}
+
+button.secondary  {
+    background-color: #e2916c;
+    color: #000000;
+    border-width: 0;
+    border-radius: 16px;
+    padding: 0 20px;
+    font-size: 40px;
+    font-family: "Markazi Text", Arial, Helvetica, sans-serif;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+main button.secondary:hover {
+    background-color: #e2916c;
+}

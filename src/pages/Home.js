@@ -1,5 +1,6 @@
 import "./Home.css";
 import { Card } from "../components/Card";
+import { Button } from "../components/Button";
 import HeroPhoto from "../assets/restaurant-food.png";
 import GreekSaladPhoto from "../assets/greek-salad.png";
 
@@ -37,7 +38,7 @@ const Home = () => {
 			<section className="highlights">
 				<div className="container">
 					<h3>Specials</h3>
-					<button className="primary online-menu">Online Menu</button>
+					<Button className="primary online-menu">Online Menu</Button>
 					<div className="three">
 						<Card special={special}></Card>
 						<Card special={special}></Card>

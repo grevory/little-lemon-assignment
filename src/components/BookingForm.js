@@ -1,19 +1,47 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Button } from "./Button";
 
-export const BookingForm = ({ availableTimes, bookTime, onSubmit }) => {
+export const BookingForm = ({
+	availableTimes,
+	onDateChange,
+	onSubmit,
+	id = "booking-form",
+}) => {
+	console.log("BookingForm availableTimes", availableTimes);
 	const minDate = Object.keys(availableTimes)[0];
-	const maxDate = Object.keys(availableTimes)[
-		Object.keys(availableTimes).length - 1
-	];
-	const [reservationDate, setReservationDate] = useState(minDate);
-	const [reservationTime, setReservationTime] = useState("");
-	const [numberOfGuests, setNumberOfGuests] = useState(2);
-	const [occasion, setOccasion] = useState("Other");
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		bookTime(reservationDate, reservationTime);
-		console.log(111, reservationDate, reservationTime, availableTimes);
+	const minGuests = 1;
+	const maxGuests = 12;
+
+	const [formValues, setFormValues] = useState({
+		date: "",
+		time: "",
+		numGuests: 2,
+		occasion: "Birthday",
+	});
+
+	useEffect(() => {
+		for (const [key, value] of Object.entries(formValues)) {
+			console.log("Setting", `${id}-${key}`, value);
+			window.localStorage.setItem(`${id}-${key}`, value);
+		}
+	}, [formValues]);
+
+	const handleInputChange = (e) => {
+		const { name, value } = e.target;
+		setFormValues({
+			...formValues,
+			[name]: value,
+		});
+	};
+
+	const handleDateChange = (e) => {
+		onDateChange(e.target.value);
+		return handleInputChange(e);
+	};
+
+	const handleSubmit = (formValues) => {
+		return (e) => onSubmit(e, formValues);
 	};
 
 	return (
@@ -24,54 +52,56 @@ export const BookingForm = ({ availableTimes, bookTime, onSubmit }) => {
 				gridTemplateColumns: "200px 3fr",
 				gap: 20,
 			}}
-			onSubmit={handleSubmit}
+			id={id}
+			onSubmit={handleSubmit(formValues)}
 		>
 			<label htmlFor="res-date">Choose date</label>
 			<input
 				type="date"
+				name="date"
 				id="res-date"
-				value={reservationDate}
+				value={formValues.date}
 				min={minDate}
-				max={maxDate}
-				onChange={(e) => setReservationDate(e.target.value)}
+				onChange={handleDateChange}
 			/>
 			<label htmlFor="res-time">Choose time</label>
 			<select
+				name="time"
 				id="res-time"
-				value={reservationTime}
-				onChange={(e) => setReservationTime(e.target.value)}
+				value={formValues.time}
+				onChange={handleInputChange}
 			>
-				{availableTimes[reservationDate].map((timeSlot) => (
-					<option key={timeSlot} value={timeSlot}>
-						{timeSlot}
-					</option>
-				))}
+				{availableTimes[formValues.date] &&
+					availableTimes[formValues.date].map((timeSlot) => (
+						<option key={timeSlot} value={timeSlot}>
+							{timeSlot}
+						</option>
+					))}
 			</select>
-			<label htmlFor="guests">Number of guests</label>
+			<label htmlFor="numGuests">Number of guests</label>
 			<input
+				name="numGuests"
 				type="number"
 				placeholder="1"
-				min="1"
-				max="10"
-				id="guests"
-				value={numberOfGuests}
-				onChange={(e) => setNumberOfGuests(e.target.value)}
+				min={minGuests}
+				max={maxGuests}
+				id="numGuests"
+				value={formValues.numGuests}
+				onChange={handleInputChange}
 			/>
 			<label htmlFor="occasion">Occasion</label>
 			<select
+				name="occasions"
 				id="occasion"
-				value={occasion}
-				onChange={(e) => setOccasion(e.target.value)}
+				value={formValues.occasion}
+				onChange={handleInputChange}
 			>
 				<option>Birthday</option>
 				<option>Anniversary</option>
 			</select>
-			<input
-				aria-label="Book"
-				type="submit"
-				value="Book"
-				className="secondary"
-			/>
+			<Button aria-label="Book" type="submit" className="secondary">
+				Book
+			</Button>
 		</form>
 	);
 };

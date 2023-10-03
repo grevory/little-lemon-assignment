@@ -1,18 +1,14 @@
 import * as React from "react";
 import { createRoot } from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
-import {
-	createBrowserRouter,
-	RouterProvider,
-	Route,
-	Link,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App";
-import Home from "./screens/Home";
 import "./index.css";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
-import BookingPage from "./screens/BookingPage";
+import Home from "./pages/Home";
+import BookingPage from "./pages/BookingPage";
+import ConfirmedBooking from "./pages/ConfirmedBookingPage";
 
 const router = createBrowserRouter([
 	{
@@ -39,6 +35,16 @@ const router = createBrowserRouter([
 			<>
 				<Header />
 				<BookingPage />
+				<Footer />
+			</>
+		),
+	},
+	{
+		path: "/reservation/confirmed",
+		element: (
+			<>
+				<Header />
+				<ConfirmedBooking />
 				<Footer />
 			</>
 		),

@@ -1,6 +1,6 @@
 import "./App.css";
 import { Header } from "./components/Header";
-import Home from "./screens/Home";
+import Home from "./pages/Home";
 import { Footer } from "./components/Footer";
 
 const App = () => (

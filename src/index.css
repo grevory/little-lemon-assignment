@@ -57,17 +57,3 @@ main .hero h1 {
 main section {
   margin: 2em 0;
 }
-
-main button.secondary,
-main a.secondary,
-main input[type="submit"].secondary  {
-    background-color: #EE9972;
-    color: #000000;
-    border-width: 0;
-    border-radius: 16px;
-    padding: 0 20px;
-    font-size: 40px;
-    font-family: "Markazi Text", Arial, Helvetica, sans-serif;
-    cursor: pointer;
-    text-decoration: none;
-}
