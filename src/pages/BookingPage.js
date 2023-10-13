@@ -1,9 +1,9 @@
-import { useReducer, useEffect, useState } from "react";
+import { useReducer } from "react";
 import { BookingForm } from "../components/BookingForm";
 import { fetchAPI, submitAPI } from "../services/mockApi";
 import { useNavigate } from "react-router-dom";
 
-const formatDate = (date) => date.toISOString().split("T")[0];
+const formatDate = (date) => new Date(date).toLocaleDateString("en-CA");
 
 export const initializeTimes = (date) => fetchAPI(date);
 
@@ -57,8 +57,7 @@ const BookingPage = () => {
 	const displateChangeDate = (date) =>
 		dispatch({ type: "change_date", date });
 
-	const handleFormSubmit = (event, formData) => {
-		event.preventDefault();
+	const handleFormSubmit = (formData) => {
 		console.log("SUBMIT", formData);
 		submitAPI(formData);
 		navigate("/reservation/confirmed");

@@ -1,64 +1,80 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
+import { useFormik, validateYupSchema, yupToFormErrors } from "formik";
+import * as Yup from "yup";
 import { Button } from "./Button";
+import { ErrorMessage } from "./ErrorMessage";
 
-export const BookingForm = ({
-	availableTimes,
-	onDateChange,
-	onSubmit,
-	id = "booking-form",
-}) => {
-	const minDate = Object.keys(availableTimes)[0];
+export const handleFormikSubmit = (onSubmit) => (values) => {
+	window.localStorage.setItem("Bookings", JSON.stringify(values));
+	onSubmit(values);
+};
 
-	const minGuests = 1;
-	const maxGuests = 12;
+export const BookingForm = ({ availableTimes, onDateChange, onSubmit }) => {
+	const today = new Date().toLocaleDateString("en-CA");
+	const initialValues = useMemo(
+		() =>
+			JSON.parse(window.localStorage.getItem(`Bookings`) || null) || {
+				date: today,
+				time: availableTimes[today][0],
+				numGuests: 1,
+				occasion: "birthday",
+			},
+		[availableTimes, today]
+	);
 
-	const [formValues, setFormValues] = useState(() => ({
-		date: window.localStorage.getItem(`${id}-date`) || "",
-		time: window.localStorage.getItem(`${id}-time`) || "",
-		numGuests: window.localStorage.getItem(`${id}-numGuests`) || 2,
-		occasion: window.localStorage.getItem(`${id}-occasion`) || "Birthday",
-	}));
+	const formik = useFormik({
+		initialValues,
+		onSubmit: handleFormikSubmit(onSubmit),
+		validate: (values) => {
+			const validationSchema = Yup.object({
+				date: Yup.date()
+					.min(today, "Cannot book in the past")
+					.required("Date is required"),
+				time: Yup.string()
+					.oneOf(availableTimes[values.date] || [])
+					.required("Time is required"),
+				numGuests: Yup.number()
+					.min(
+						1,
+						"At least one person will need to be reserving table"
+					)
+					.max(
+						10,
+						"We cannot accommodate this many patrons at one table"
+					)
+					.required("Number of guests is required"),
+				occasion: Yup.string()
+					.oneOf(["birthday", "engagement", "anniversary"])
+					.required("Occasion is required"),
+			});
+			try {
+				validateYupSchema(values, validationSchema, true, this);
+			} catch (err) {
+				return yupToFormErrors(err); //for rendering validation errors
+			}
+
+			return {};
+		},
+	});
 
 	useEffect(() => {
-		for (const [key, value] of Object.entries(formValues)) {
-			window.localStorage.setItem(`${id}-${key}`, value);
+		const localStorageData = JSON.parse(
+			window.localStorage.getItem("Bookings") || null
+		);
+		const prevDate = localStorageData?.date || today;
+
+		if (prevDate !== formik.values.date) {
+			onDateChange(formik.values.date);
 		}
-	}, [formValues, id]);
-
-	useEffect(() => {
-		if (!availableTimes[formValues.date]) {
-			onDateChange(formValues.date);
-		}
-	}, [availableTimes, formValues, onDateChange]);
-
-	const handleInputChange = (e) => {
-		const { name, value } = e.target;
-		setFormValues({
-			...formValues,
-			[name]: value,
-		});
-	};
-
-	const handleDateChange = (e) => {
-		onDateChange(e.target.value);
-		return handleInputChange(e);
-	};
-
-	const handleSubmit = (formValues) => {
-		return (e) => onSubmit(e, formValues);
-	};
+	}, [formik.values.date]);
 
 	return (
 		<form
 			style={{
 				display: "grid",
-				maxWidth: 200,
+				maxWidth: 320,
 				gridTemplateColumns: "200px 3fr",
 				gap: 20,
-			}}
-			id={id}
-			onSubmit={(e) => {
-				e.preventDefault();
 			}}
 		>
 			<label htmlFor="res-date">Choose date</label>
@@ -66,49 +82,84 @@ export const BookingForm = ({
 				type="date"
 				name="date"
 				id="res-date"
-				value={formValues.date}
-				min={minDate}
-				onChange={handleDateChange}
+				data-testid="dateInput"
+				min={today}
+				className={
+					formik.errors.date && formik.touched.date
+						? "input-error"
+						: null
+				}
+				{...formik.getFieldProps("date")}
 			/>
-			<label htmlFor="res-time">Choose time</label>
-			<select
-				name="time"
-				id="res-time"
-				value={formValues.time}
-				onChange={handleInputChange}
-			>
-				{availableTimes[formValues.date] &&
-					availableTimes[formValues.date].map((timeSlot) => (
-						<option key={timeSlot} value={timeSlot}>
-							{timeSlot}
-						</option>
-					))}
-			</select>
-			<label htmlFor="numGuests">Number of guests</label>
+			{formik.errors.date && formik.touched.date ? (
+				<ErrorMessage>{formik.errors.date}</ErrorMessage>
+			) : null}
+			{formik.values.date && availableTimes[formik.values.date] ? (
+				<>
+					<label htmlFor="res-time">Choose time</label>
+					<select
+						name="time"
+						id="res-time"
+						className={
+							formik.errors.time && formik.touched.time
+								? "input-error"
+								: null
+						}
+						{...formik.getFieldProps("time")}
+					>
+						{availableTimes[formik.values.date] &&
+							availableTimes[formik.values.date].map(
+								(timeSlot) => (
+									<option key={timeSlot} value={timeSlot}>
+										{timeSlot}
+									</option>
+								)
+							)}
+					</select>
+				</>
+			) : null}
+			{formik.errors.time && formik.touched.time ? (
+				<ErrorMessage>{formik.errors.time}</ErrorMessage>
+			) : null}
+			<label htmlFor="res-numGuests">Number of guests</label>
 			<input
-				name="numGuests"
 				type="number"
-				placeholder="1"
-				min={minGuests}
-				max={maxGuests}
-				id="numGuests"
-				value={formValues.numGuests}
-				onChange={handleInputChange}
+				name="numGuests"
+				id="res-numGuests"
+				className={
+					formik.errors.numGuests && formik.touched.numGuests
+						? "input-error"
+						: null
+				}
+				{...formik.getFieldProps("numGuests")}
 			/>
+			{formik.errors.numGuests && formik.touched.numGuests ? (
+				<ErrorMessage>{formik.errors.numGuests}</ErrorMessage>
+			) : null}
 			<label htmlFor="occasion">Occasion</label>
 			<select
 				name="occasion"
 				id="occasion"
-				value={formValues.occasion}
-				onChange={handleInputChange}
+				className={
+					formik.errors.occasion && formik.touched.occasion
+						? "input-error"
+						: null
+				}
+				{...formik.getFieldProps("occasion")}
 			>
-				<option value="Birthday">Birthday</option>
-				<option value="Anniversary">Anniversary</option>
+				<option value="birthday">Birthday</option>
+				<option value="engagement">Engagement</option>
+				<option value="anniversary">Anniversary</option>
 			</select>
+			{formik.errors.occasion && formik.touched.occasion ? (
+				<ErrorMessage>{formik.errors.occasion}</ErrorMessage>
+			) : null}
 			<Button
 				aria-label="Book"
-				className="secondary"
-				onClick={handleSubmit(formValues)}
+				disabled={!formik.isValid}
+				type="button"
+				className={`secondary ${!formik.isValid ? "disabled" : ""}`}
+				onClick={() => formik.submitForm()}
 			>
 				Book
 			</Button>

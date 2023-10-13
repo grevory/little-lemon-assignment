@@ -31,3 +31,9 @@ button.secondary  {
 main button.secondary:hover {
     background-color: #e2916c;
 }
+
+main button.disabled.secondary {
+    background-color: #e6d5cd;
+    color: #aaaaaa;
+    cursor: default;
+}
