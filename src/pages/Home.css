@@ -17,6 +17,10 @@ main h3 {
     font-weight: 400;
     margin: 2rem 0;
 }
+main .green-area h3 {
+    color: #ffffff;
+    margin-top: 0;
+}
 
 .hero .container,
 .highlights .container {
@@ -41,7 +45,7 @@ main h3 {
     width: auto;
 }
 
-.highlights .three {
+section .three {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-column-gap: 2em;
@@ -95,3 +99,100 @@ main h3 {
 .special-card .card-button:hover {
     background-color: rgba(0,0,0,0.1);
 }
+
+.about .container {
+    display: grid;
+    align-items: center;
+    grid-column-gap: 10rem;
+    grid-template: "info image";
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .about h3 {
+    font-family: "Markazi Text";
+    font-weight: medium;
+    font-size: 56px;
+    line-height: 30px;
+    margin: 0;
+  }
+  .about h4 {
+    font-family: "Markazi Text";
+    font-size: 40px;
+    line-height: 20px;
+    color: #333333;
+    margin: 0.5em 0 1em 0;
+  }
+  .about-description {
+    color: black;
+    padding-right: 6rem;
+  }
+
+  .about-image-under {
+    margin-top: 5rem;
+    margin-right: 10rem;
+    grid-area: image;
+    width: 100%;
+    height: 20rem;
+    justify-self: end;
+    border-radius: 16px;
+    object-fit: cover;
+  }
+
+  .about-image-above {
+    grid-area: image;
+    width: 100%;
+    height: 20rem;
+    justify-self: end;
+    border-radius: 16px;
+    object-fit: cover;
+  }
+
+@media screen and (max-width: 767px) {
+    .about {
+      height: 100%;
+      padding: 1rem 1rem;
+      display: grid;
+      align-items: center;
+      grid-column-gap: 2rem;
+      grid-template: "info" "image";
+      grid-template-rows: 1fr 0.75fr;
+      max-width: 65rem;
+      margin: 0 auto;
+    }
+
+    .about-title {
+      font-family: "Markazi Text";
+      font-weight: medium;
+      font-size: 36px;
+      line-height: 30px;
+    }
+    .about-subtitle {
+      font-family: "Markazi Text";
+      font-size: 32px;
+      line-height: 20px;
+      color: #333333;
+    }
+    .about-description {
+      color: black;
+      padding-right: 6rem;
+    }
+
+    .about-image-bruchetta {
+      grid-area: image;
+      display: none;
+      width: 100%;
+      height: 20rem;
+      border-radius: 16px;
+      object-fit: cover;
+    }
+
+    .about-image-restaurant {
+      grid-area: image;
+      width: 100%;
+      height: 10rem;
+      justify-self: end;
+      border-radius: 16px;
+      object-fit: cover;
+      padding: 0;
+    }
+  }

@@ -6,7 +6,7 @@ import { Footer } from "./components/Footer";
 const App = () => (
 	<>
 		<Header />
-		<Home></Home>
+		<Home />
 		<Footer />
 	</>
 );

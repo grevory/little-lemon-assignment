@@ -2,7 +2,7 @@ import RestaurantPhoto from "../assets/restaurant.png";
 import { Nav } from "./Nav";
 export function Footer() {
 	return (
-		<footer class="footer">
+		<footer className="footer green-area">
 			<div className="container">
 				<section>
 					<img
@@ -18,11 +18,11 @@ export function Footer() {
 					<strong>Contact</strong>
 					<br />
 					<br />
-					<addr>
+					<address>
 						123 Main Rd
 						<br />
 						Chicago, IL
-					</addr>
+					</address>
 					<br />
 					<br />
 					<a href="tel:8005551234">1 (800) 555-1234</a>
