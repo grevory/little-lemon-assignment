@@ -1,8 +1,8 @@
 import "./Nav.css";
 
-export function Nav(children) {
+export function Nav({ className = "main-menu" }) {
 	return (
-		<nav className="main-menu">
+		<nav className={className}>
 			<ul>
 				<li>
 					<a href="/">Home</a>

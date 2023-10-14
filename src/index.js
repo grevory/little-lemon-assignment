@@ -1,7 +1,7 @@
 import * as React from "react";
 import { createRoot } from "react-dom/client";
 import reportWebVitals from "./reportWebVitals";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import App from "./App";
 import "./index.css";
 import { Footer } from "./components/Footer";
@@ -9,53 +9,54 @@ import { Header } from "./components/Header";
 import Home from "./pages/Home";
 import BookingPage from "./pages/BookingPage";
 import ConfirmedBooking from "./pages/ConfirmedBookingPage";
+import About from "./pages/About";
+import Menu from "./pages/Menu";
+import Order from "./pages/Order";
+import Login from "./pages/Login";
+
+function Layout() {
+	return (
+		<>
+			<Header />
+			<Outlet />
+			<Footer />
+		</>
+	);
+}
 
 const router = createBrowserRouter([
 	{
-		path: "/",
-		element: (
-			<>
-				<Header />
-				<Home />
-				<Footer />
-			</>
-		),
-	},
-	{
-		path: "/about",
-		element: <App />,
-	},
-	{
-		path: "/menu",
-		element: <App />,
-	},
-	{
-		path: "/reservation",
-		element: (
-			<>
-				<Header />
-				<BookingPage />
-				<Footer />
-			</>
-		),
-	},
-	{
-		path: "/reservation/confirmed",
-		element: (
-			<>
-				<Header />
-				<ConfirmedBooking />
-				<Footer />
-			</>
-		),
-	},
-	{
-		path: "/order",
-		element: <App />,
-	},
-	{
-		path: "/login",
-		element: <App />,
+		element: <Layout />,
+		children: [
+			{
+				path: "/",
+				element: <Home />,
+			},
+			{
+				path: "/about",
+				element: <About />,
+			},
+			{
+				path: "/menu",
+				element: <Menu />,
+			},
+			{
+				path: "/reservation",
+				element: <BookingPage />,
+			},
+			{
+				path: "/reservation/confirmed",
+				element: <ConfirmedBooking />,
+			},
+			{
+				path: "/order",
+				element: <Order />,
+			},
+			{
+				path: "/login",
+				element: <Login />,
+			},
+		],
 	},
 ]);
 
